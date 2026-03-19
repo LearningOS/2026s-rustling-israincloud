@@ -1,8 +1,8 @@
 /*
 	graph
-	This problem requires you to implement a basic graph functio
+	This problem requires you to implement a basic graph function
 */
-// I AM NOT DONE
+
 
 use std::collections::{HashMap, HashSet};
 use std::fmt;
@@ -30,6 +30,16 @@ impl Graph for UndirectedGraph {
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
+        let (node1, node2, val) = edge;
+        let node1_str = node1.to_string();
+        let node2_str = node2.to_string();
+
+        self.adjacency_table.entry(node1_str.clone())
+                            .or_default()
+                            .push((node2_str.clone(), val));
+        self.adjacency_table.entry(node2_str)
+                            .or_default()
+                            .push((node1_str, val));
     }
 }
 pub trait Graph {
@@ -38,10 +48,20 @@ pub trait Graph {
     fn adjacency_table(&self) -> &HashMap<String, Vec<(String, i32)>>;
     fn add_node(&mut self, node: &str) -> bool {
         //TODO
-		true
+        if self.contains(node) {false}
+        else {self.adjacency_table_mutable().insert(node.to_string(), Vec::new()); true}
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
+        let (node1, node2, weight) = edge;
+        let node1_str = node1.to_string();
+        let node2_str = node2.to_string();
+        self.adjacency_table_mutable().entry(node1_str.clone())
+                                      .or_default()
+                                      .push((node2_str.clone(), weight));
+        self.adjacency_table_mutable().entry(node2_str)
+                                      .or_default()
+                                      .push((node1_str, weight));
     }
     fn contains(&self, node: &str) -> bool {
         self.adjacency_table().get(node).is_some()

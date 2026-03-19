@@ -3,8 +3,6 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
-use std::cmp::Ordering;
 use std::fmt::Debug;
 
 
@@ -51,12 +49,33 @@ where
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
         //TODO
+        match &mut self.root {
+            None => {
+                self.root = Some(Box::new(TreeNode::new(value)));
+            },
+            Some(tree_root) => {
+                tree_root.insert(value);
+            }
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
         //TODO
-        true
+        let mut curr_node = &self.root;
+
+        while let Some(node) = curr_node {
+            if node.value == value {
+                return true;
+            }
+            else if node.value < value {
+                curr_node = &node.right;
+            }
+            else {
+                curr_node = &node.left;
+            }
+        }
+        return false;
     }
 }
 
@@ -67,6 +86,27 @@ where
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
         //TODO
+        let mut curr_node = self;
+
+        loop {
+            if curr_node.value > value {
+                if curr_node.left.is_none() {
+                    curr_node.left = Some(Box::new(TreeNode::new(value)));
+                    return;
+                } else {
+                    curr_node = curr_node.left.as_deref_mut().unwrap();
+                }
+            } else if curr_node.value < value {
+                if curr_node.right.is_none() {
+                    curr_node.right = Some(Box::new(TreeNode::new(value)));
+                    return;
+                } else {
+                    curr_node = curr_node.right.as_deref_mut().unwrap();
+                }
+            } else {
+                return;
+            }
+        }
     }
 }
 
