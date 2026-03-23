@@ -31,4 +31,13 @@ fn main() {
     } else {
         println!("Neither alphabetic nor numeric!");
     }
+
+    let ferris = '\u{1F980}';
+    if ferris.is_alphabetic() {
+        println!("Alphabetical!");
+    } else if ferris.is_numeric() {
+        println!("Numerical!");
+    } else {
+        println!("Neither alphabetic nor numeric!");
+    }
 }
